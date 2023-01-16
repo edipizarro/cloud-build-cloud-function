@@ -23,6 +23,7 @@ def handler(request):
         create_task(PROJECT_ID, LOCATION, TASK_NAME, TASK_URL, SERVICE_ACCOUNT_EMAIL)
 
     return {'message': f'{tasks} Tasks sent to Cloud Task.'}
+    
 
 def create_task(project, location, queue, task_url, service_account_email):
     payload = {
