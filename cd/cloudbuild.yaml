@@ -12,7 +12,7 @@ steps:
 
 # Deploy sum-two-numbers
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['functions', 'deploy', 'function-1', --trigger-http', '--runtime', 'python311', '--entry-point', 'sum-two-numbers', '--allow-unauthenticated', '--gen2', '--region', 'us-central1']
+  args: ['functions', 'deploy', 'function-1', '--trigger-http', '--runtime', 'python311', '--entry-point', 'sum-two-numbers', '--allow-unauthenticated', '--gen2', '--region', 'us-central1']
   dir: 'cloud-functions/sum-two-numbers/'
 
 # Delete generate-task
