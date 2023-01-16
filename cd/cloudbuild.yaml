@@ -1,0 +1,28 @@
+# https://cloud.google.com/functions/docs/testing/test-cicd
+steps:
+
+- name: 'docker.io/library/python:3.11'
+  entrypoint: /bin/sh
+  args: [-c, 'pip install -r requirements.txt']
+  dir: 'cd/'
+
+# Delete sum-two-numbers
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'delete', 'sum-two-numbers', '--gen2', '--region', 'us-central1']
+
+# Deploy sum-two-numbers
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'sum-two-numbers', '--trigger-http', '--runtime', 'python311', '--entry-point', 'sum-two-numbers', '--allow-unauthenticated', '--gen2', '--region', 'us-central1']
+  dir: 'cloud-functions/sum-two-numbers/'
+
+# Delete generate-task
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'delete', 'generate-task', '--gen2', '--region', 'us-central1']
+
+# Deploy generate-task
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'generate-task', '--trigger-http', '--runtime', 'python311', '--entry-point', 'generate-task', '--allow-unauthenticated', '--gen2', '--region', 'us-central1', '--set-env-vars', 'PROJECT_ID=asynctasks-374903', 'LOCATION=    northamerica-northeast1', 'QUEUE=task-queue', 'TASK_URL=https://sum-two-numbers-meip4qj4yq-uc.a.run.app', 'SERVICE_ACCOUNT_EMAIL=task-queue@asynctasks-374903.iam.gserviceaccount.com ']
+  dir: 'cloud-functions/generate-task/'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
